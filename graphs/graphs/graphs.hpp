@@ -1,6 +1,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <set>
 
 
 #ifndef GRAPHS_HPP_INCLUDED
@@ -64,5 +65,41 @@ Graph *load_graph(string);
 Perform depth-first search on a given graph.
 */
 vector <Graph *> dfs(Graph *&graph, unordered_map <int, int> &finish_times);
+
+
+class WeightedGraph{
+    /**
+    This class is used to represent a graph with weighted edges in an adjacency-list format
+    */
+public:
+    // PROPERTIES
+    set <int> nodes;
+    unordered_map <int, vector <int> *> edges;
+    unordered_map <int, vector <double> *> weights;  // keeps track of the weight for the corresponding neighbor
+
+    // METHODS
+    /**
+    Base constructor of a weighted directed graph, which simply instantiates the node property,
+    so there are no edges.
+    */
+    WeightedGraph(vector <int> nodes);
+
+    /**
+    Adds a directed edge between the given node IDs with the given weight. These IDs
+    must be present in the graph for the node to even be created.
+    */
+    void add_edge(int source, int dest, double weight);
+
+    /**
+    Add a node with a given ID to the the graph. If it already exists, does nothing.
+    */
+    void add_node(int node_id);
+};
+
+
+/**
+Call this function to load a weighted graph from a file
+*/
+WeightedGraph *load_weighted_graph(string filename);
 
 #endif  // GRAPHS_HPP_INCLUDED

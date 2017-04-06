@@ -160,3 +160,51 @@ Graph *load_graph(string filename){
     graph_stream.close();
     return retgraph;
 }
+
+
+// WEIGHTED DIRECTED GRAPH STUFF
+
+WeightedGraph::WeightedGraph(vector <int> nodes){
+    for (int node: nodes){
+        this->add_node(node);
+    }
+}
+
+void WeightedGraph::add_edge(int source, int dest, double weight){
+    this->edges[source]->push_back(dest);
+    this->weights[source]->push_back(weight);
+}
+
+void WeightedGraph::add_node(int node_id){
+    if (this->nodes.find(node_id) == this->nodes.end()){
+        this->nodes.insert(node_id);
+        this->edges[node_id] = new vector <int>;
+        this->weights[node_id] = new vector <double>;
+    }
+}
+
+
+WeightedGraph *load_weighted_graph(string filename){
+    ifstream graph_stream;
+    graph_stream.open(filename);
+
+    WeightedGraph *retgraph = new WeightedGraph({});
+    string line;
+
+    while (getline(graph_stream, line)){
+        vector <string> edges = split(line, '\t');
+        int this_node = stoi(edges[0]);
+        retgraph->add_node(this_node);
+
+        for (size_t i=1; i < edges.size(); i++){
+            vector <string> node_and_weight = split(edges[i], ',');
+            int neighbor_id = stoi(node_and_weight[0]);
+            double edge_weight = (double)stoi(node_and_weight[1]);
+
+            retgraph->add_node(neighbor_id);
+            retgraph->add_edge(this_node, neighbor_id, edge_weight);
+        }
+    }
+    return retgraph;
+}
+

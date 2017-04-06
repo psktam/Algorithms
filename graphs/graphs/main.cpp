@@ -2,12 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
 #include "graphs.hpp"
+#include "dijkstra.hpp"
 
 using namespace std;
 
-int main()
-{
+
+void graph_problem(){
     cout << "What filename to load> ";
     string graph_filename;
     cin >> graph_filename;
@@ -54,4 +56,26 @@ int main()
     for (int i = 0; i < 7; i++){
         cout << "SCC with size " << *(rit++) << endl;
     }
+}
+
+
+void weighted_graph_problem(){
+    WeightedGraph *tempgraph = new WeightedGraph({1, 2, 3, 4});
+    tempgraph->add_edge(1, 2, 10.0);
+    tempgraph->add_edge(2, 4, 10.0);
+    tempgraph->add_edge(1, 3, 5);
+    tempgraph->add_edge(3, 4, 20);
+    tempgraph->add_edge(3, 2, 1);
+    unordered_map <int, double> dist_map;
+
+    DijkstraGraph *shortest_paths_graph = shortest_paths(tempgraph, 1, dist_map);
+
+    for (int node: tempgraph->nodes){
+        cout << "Shortest distance from 1 to " << node << " is " << dist_map[node] << endl;
+    }
+}
+
+int main()
+{
+    weighted_graph_problem();
 }
