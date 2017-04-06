@@ -60,18 +60,18 @@ void graph_problem(){
 
 
 void weighted_graph_problem(){
-    WeightedGraph *tempgraph = new WeightedGraph({1, 2, 3, 4});
-    tempgraph->add_edge(1, 2, 10.0);
-    tempgraph->add_edge(2, 4, 10.0);
-    tempgraph->add_edge(1, 3, 5);
-    tempgraph->add_edge(3, 4, 20);
-    tempgraph->add_edge(3, 2, 1);
+    cout << "What filename to load >: ";
+    string filename;
+    cin >> filename;
+    cout << "Loading graph...\n";
+    int source = 1;
+    WeightedGraph *graph = load_weighted_graph(filename);
     unordered_map <int, double> dist_map;
 
-    DijkstraGraph *shortest_paths_graph = shortest_paths(tempgraph, 1, dist_map);
+    DijkstraGraph *shortest_paths_graph = shortest_paths(graph, source, dist_map);
 
-    for (int node: tempgraph->nodes){
-        cout << "Shortest distance from 1 to " << node << " is " << dist_map[node] << endl;
+    for (int node: {7,37,59,82,99,115,133,165,188,197}){
+        cout << dist_map[node] << ",";
     }
 }
 

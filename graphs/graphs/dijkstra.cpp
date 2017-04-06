@@ -1,5 +1,6 @@
 #include <limits>
 #include <queue>
+#include <iostream>
 #include "dijkstra.hpp"
 #include "graphs.hpp"
 
@@ -16,7 +17,7 @@ void relax_edge(int source, int dest, double weight,
         // is, we assign a new distance and then wire the edge in the
         // appropriate shortest-paths graph
         total_dist_map[dest] = new_distance;
-        shortest_path_graph->add_edge(source, dest, weight);
+        shortest_path_graph->add_edge(dest, source, weight);
     }
 }
 
@@ -52,13 +53,23 @@ DijkstraGraph *shortest_paths(WeightedGraph *&graph, int source_node,
         retgraph->add_node(node);
     }
     least_dist_map[source_node] = 0;
+
     for (int node: graph->nodes){
         node_heap.push(node);
     }
 
-    while (node_heap.size() > 0){
-        int closest_node = node_heap.top();
-        node_heap.pop();
+    set <int> remaining_nodes = graph->nodes;
+
+    while (remaining_nodes.size() > 0){
+        // Someday, implement decrease-key.
+        double closest_dist = inf;
+        int closest_node = -1;
+        for (int n: remaining_nodes){
+            if (least_dist_map[n] < closest_dist){
+                closest_node = n;
+                closest_dist = least_dist_map[n];
+            }
+        }
         processed_nodes.push_back(closest_node);
 
         for (size_t idx=0; idx < graph->edges[closest_node]->size(); idx++){
@@ -67,6 +78,7 @@ DijkstraGraph *shortest_paths(WeightedGraph *&graph, int source_node,
 
             relax_edge(closest_node, neighbor, weight, least_dist_map, retgraph);
         }
+        remaining_nodes.erase(closest_node);
     }
     return retgraph;
 }
