@@ -15,7 +15,7 @@ public:
 
     // properties, dawg
     // The vector stores pointers to linked lists of integers
-    std::vector <std::list<int> *> *elements;
+    std::vector <std::list<long long int> *> *elements;
 
     /// Constructor to create the table, already at a certain size.
     /// This should create a table with size the closest power of 2 - 1,
@@ -24,13 +24,13 @@ public:
 
     /// This method adds a new element to the hash table, at the
     /// specified key.
-    void insert_elem(int element);
+    void insert_elem(long long int element);
 
     /// Lets you know that the given element is in the HT
-    bool elem_search(int element);
+    bool elem_search(long long int element);
 
     /// Generates the hash code for the given input
-    std::size_t hash_function(int element);
+    std::size_t hash_function(long long int element);
 };
 
 
